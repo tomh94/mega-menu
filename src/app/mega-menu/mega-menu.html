@@ -1,0 +1,48 @@
+<button *ngIf="isMobile" (click)="toggleMobileMenu()" class="p-4">
+  <span class="text-2xl">☰</span>
+</button>
+
+<nav [class.hidden]="isMobile && !isMobileMenuOpen">
+  <ul [class]="isMobile ? 'flex-col' : 'flex justify-center gap-20'">
+    <li *ngFor="let menuItem of megaMenuData"
+        (mouseenter)="!isMobile && showMenu(menuItem.label)"
+        (click)="isMobile && showMenu(menuItem)"
+        (mouseleave)="!isMobile && hideMenu()">
+      <div>
+        {{ menuItem.label }}
+      </div>
+      <div
+        class="absolute"
+        *ngIf="hasColumns(menuItem) && activeMenu === menuItem.label && !isMobile">
+        <h2 class="cursor-pointer" *ngFor="let item of menuItem.columns"
+            (click)="showMenuItem(item)">
+          {{ item.title }}
+          <span class="font-normal transition-transform duration-400 ease-in-out inline-block"
+                [class.rotate-90]="activeMenuItem.includes(item)">></span>
+          <ul class="text-gray-600" *ngIf="activeMenuItem.includes(item)">
+            <li>
+              <div *ngFor="let subItem of item.items">
+                {{ subItem.label }} <br>
+              </div>
+            </li>
+          </ul>
+        </h2>
+      </div>
+      <div class="relative" *ngIf="isMobile && activeMenuMob.includes(menuItem)">
+        <h2 class="cursor-pointer" *ngFor="let item of menuItem.columns"
+            (click)="showMenuItem(item); $event.stopPropagation()">
+          {{ item.title }}
+          <span class="font-normal transition-transform duration-400 ease-in-out inline-block"
+                [class.rotate-90]="activeMenuItem.includes(item)">></span>
+          <ul class="text-gray-600" *ngIf="activeMenuItem.includes(item)">
+            <li>
+              <div *ngFor="let subItem of item.items">
+                {{ subItem.label }} <br>
+              </div>
+            </li>
+          </ul>
+        </h2>
+      </div>
+    </li>
+  </ul>
+</nav>

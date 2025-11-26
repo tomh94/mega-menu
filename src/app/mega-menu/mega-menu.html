@@ -14,30 +14,32 @@
       <div
         class="absolute"
         *ngIf="hasColumns(menuItem) && activeMenu === menuItem.label && !isMobile">
-        <h2 class="cursor-pointer" *ngFor="let item of menuItem.columns"
+        <h2 class="cursor-pointer pl-5" *ngFor="let item of menuItem.columns"
             (click)="showMenuItem(item)">
-          {{ item.title }}
-          <span class="font-normal transition-transform duration-400 ease-in-out inline-block"
+            <!--(mouseenter)="showMenuItem(item)"
+            (mouseleave)="showMenuItem(item)"-->
+            {{ item.title }}
+          <span class="font-normal transition-transform duration-400 ease-in-out inline-block text-gray-400"
                 [class.rotate-90]="activeMenuItem.includes(item)">></span>
-          <ul class="text-gray-600" *ngIf="activeMenuItem.includes(item)">
+          <ul class="text-gray-600 pl-5" *ngIf="activeMenuItem.includes(item)">
             <li>
               <div *ngFor="let subItem of item.items">
-                {{ subItem.label }} <br>
+                <h4> {{ subItem.label }}</h4>
               </div>
             </li>
           </ul>
         </h2>
       </div>
       <div class="relative" *ngIf="isMobile && activeMenuMob.includes(menuItem)">
-        <h2 class="cursor-pointer" *ngFor="let item of menuItem.columns"
+        <h2 class="cursor-pointer pl-5" *ngFor="let item of menuItem.columns"
             (click)="showMenuItem(item); $event.stopPropagation()">
           {{ item.title }}
-          <span class="font-normal transition-transform duration-400 ease-in-out inline-block"
+          <span class="font-normal transition-transform duration-400 ease-in-out inline-block text-gray-400"
                 [class.rotate-90]="activeMenuItem.includes(item)">></span>
-          <ul class="text-gray-600" *ngIf="activeMenuItem.includes(item)">
+          <ul class="text-gray-600 pl-5" *ngIf="activeMenuItem.includes(item)">
             <li>
               <div *ngFor="let subItem of item.items">
-                {{ subItem.label }} <br>
+                <a href="#">{{ subItem.label }} </a>
               </div>
             </li>
           </ul>

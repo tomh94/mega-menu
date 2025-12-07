@@ -1,49 +1,58 @@
-<button *ngIf="isMobile" (click)="toggleMobileMenu()" class="p-4">
-  <span class="text-2xl">☰</span>
+<button *ngIf="isMobile" (click)="toggleMobileMenu()" class="p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 rounded-lg transition-all duration-300">
+  <span class="text-2xl bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent font-bold">☰</span>
 </button>
 
-<nav [class.hidden]="isMobile && !isMobileMenuOpen">
-  <ul [class]="isMobile ? 'flex-col' : 'flex justify-center gap-20'">
-    <li *ngFor="let menuItem of megaMenuData"
+<nav [class.hidden]="isMobile && !isMobileMenuOpen" class="bg-gradient-to-br from-white via-blue-50 to-cyan-50">
+  <ul [class]="isMobile ? 'flex-col divide-y divide-blue-100' : 'flex justify-center gap-20 p-7'">
+    <li class="cursor-pointer relative group" *ngFor="let menuItem of megaMenuData"
         (mouseenter)="!isMobile && showMenu(menuItem.label)"
         (click)="isMobile && showMenu(menuItem)"
         (mouseleave)="!isMobile && hideMenu()">
-      <div>
-        {{ menuItem.label }}
+      <div class="relative inline-block h-4">
+        <span class="font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-cyan-600 hover:bg-clip-text hover:text-transparent transition-all duration-300 py-2 px-4 rounded-lg hover:shadow-lg hover:shadow-blue-200">
+          {{ menuItem.label }}
+        </span>
+
+        <div
+          class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 min-w-lg shadow-2xl shadow-blue-200 flex gap-8 bg-gradient-to-br from-white via-blue-50 to-cyan-50 rounded-xl z-50 p-8 border-2 border-blue-200"
+          *ngIf="hasColumns(menuItem) && activeMenu === menuItem.label && !isMobile">
+          <div class="cursor-pointer" *ngFor="let item of menuItem.columns; let last = last"
+               [class.border-r-2]="!last"
+               [class.border-blue-200]="!last"
+               [class.pr-8]="!last">
+            <h2 class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 mb-4 text-lg">
+              {{ item.title }}
+            </h2>
+            <ul class="space-y-3">
+              <li *ngFor="let subItem of item.items">
+                <a href="#" class="text-gray-600 hover:text-blue-600 hover:translate-x-2 hover:font-medium transition-all duration-300 block py-1.5 px-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-100 hover:to-cyan-100">
+                  <span class="relative">
+                    {{ subItem.label }}
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div
-        class="absolute"
-        *ngIf="hasColumns(menuItem) && activeMenu === menuItem.label && !isMobile">
-        <h2 class="cursor-pointer pl-5" *ngFor="let item of menuItem.columns"
-            (click)="showMenuItem(item)">
-            <!--(mouseenter)="showMenuItem(item)"
-            (mouseleave)="showMenuItem(item)"-->
+
+      <div class="relative bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 rounded-xl mt-2 border-2 border-blue-200 shadow-lg shadow-blue-100" *ngIf="isMobile && activeMenuMob.includes(menuItem)">
+        <div class="cursor-pointer p-4 border-b-2 border-blue-200 last:border-b-0 hover:bg-white/50 transition-all duration-300" *ngFor="let item of menuItem.columns"
+             (click)="showMenuItem(item); $event.stopPropagation()">
+          <h2 class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 flex items-center justify-between">
             {{ item.title }}
-          <span class="font-normal transition-transform duration-400 ease-in-out inline-block text-gray-400"
-                [class.rotate-90]="activeMenuItem.includes(item)">></span>
-          <ul class="text-gray-600 pl-5" *ngIf="activeMenuItem.includes(item)">
-            <li>
-              <div *ngFor="let subItem of item.items">
-                <h4> {{ subItem.label }}</h4>
-              </div>
+            <span class="font-normal transition-transform duration-300 ease-in-out inline-block text-blue-400 text-lg"
+                  [class.rotate-90]="activeMenuItem.includes(item)">›</span>
+          </h2>
+          <ul class="mt-3 space-y-2 pl-2" *ngIf="activeMenuItem.includes(item)">
+            <li *ngFor="let subItem of item.items">
+              <a href="#" class="text-gray-600 hover:text-blue-600 hover:font-medium transition-all duration-300 block py-2 px-3 rounded-lg hover:bg-gradient-to-r hover:from-white hover:to-blue-50 hover:shadow-md hover:translate-x-1">
+                {{ subItem.label }}
+              </a>
             </li>
           </ul>
-        </h2>
-      </div>
-      <div class="relative" *ngIf="isMobile && activeMenuMob.includes(menuItem)">
-        <h2 class="cursor-pointer pl-5" *ngFor="let item of menuItem.columns"
-            (click)="showMenuItem(item); $event.stopPropagation()">
-          {{ item.title }}
-          <span class="font-normal transition-transform duration-400 ease-in-out inline-block text-gray-400"
-                [class.rotate-90]="activeMenuItem.includes(item)">></span>
-          <ul class="text-gray-600 pl-5" *ngIf="activeMenuItem.includes(item)">
-            <li>
-              <div *ngFor="let subItem of item.items">
-                <a href="#">{{ subItem.label }} </a>
-              </div>
-            </li>
-          </ul>
-        </h2>
+        </div>
       </div>
     </li>
   </ul>
